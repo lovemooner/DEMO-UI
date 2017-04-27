@@ -3,7 +3,7 @@
 var  pager = {
     "pageId":"",
     "maxshowpageitem":5,//最多显示的页码个数
-    "pagelistcount":10,//每一页显示的内容条数
+    "limit":10,//每一页显示的内容条数
     "initTable":"",
     "url":"",
     "fn":"",
@@ -12,22 +12,19 @@ var  pager = {
      * @param totalRows 数据总量
      */
     "refreshUl":function(totalRows,currentPage){
+        currentPage=parseInt(currentPage);
         var pageCount = 1;
         if(totalRows>=0){
-            var pageCount = totalRows%pager.pagelistcount>0?parseInt(totalRows/pager.pagelistcount)+1:parseInt(totalRows/pager.pagelistcount);
+            pageCount = totalRows%pager.limit>0?(parseInt(totalRows/pager.limit)+1):totalRows/pager.limit;
         }
         var appendStr = pager.getPageListModel(pageCount,currentPage);
         $("#"+pager.pageId).html(appendStr);
     },
     "init":function(data){
           pager.fn=data.fn;
-          var maxshowpageitem = $(this).attr("maxshowpageitem");
-          if(maxshowpageitem!=null&&maxshowpageitem>0&&maxshowpageitem!=""){
-              pager.maxshowpageitem = maxshowpageitem;
-          }
-          var pagelistcount = $(this).attr("pagelistcount");
-          if(pagelistcount!=null&&pagelistcount>0&&pagelistcount!=""){
-              pager.pagelistcount = pagelistcount;
+          var limit=data.limit;
+          if(parseInt(limit)>0){
+            pager.limit=limit;
           }
           pager.pageId=$("#pager").attr("id");
           pager.fn(1)
@@ -38,13 +35,11 @@ var  pager = {
     },
     "itemEvent":function(fn){
           $("#"+pager.pageId +">li[class='pageItem']").live("click",function(){
-              var currentPage=$(this).attr("page-data");
-              if(fn&&typeof(fn)=="function"){
-                  fn(currentPage);
-              }
+              fn($(this).attr("page-data"));
           });
     },
     "getPageListModel":function(pageCount,currentPage){
+        currentPage=parseInt(currentPage);
         var prePage = currentPage-1;
         var nextPage = currentPage+1;
         var prePageClass ="pageItem";
@@ -88,9 +83,9 @@ var  pager = {
 }
 
 $(function () {
- var data='<%=request.getParameter("dynamicalID")%>';
+   var data='<%=request.getParameter("dynamicalID")%>';
 });
 
 </script>
 
-<ul class="page" maxshowpageitem="5" pagelistcount="10"  id="pager"></ul>
+<ul class="page"  id="pager"></ul>
