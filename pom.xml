@@ -99,7 +99,7 @@
         </dependency>
 
         <dependency>
-            <groupId>love.celery</groupId>
+            <groupId>love.moon</groupId>
             <artifactId>util</artifactId>
             <version>1.0</version>
         </dependency>
