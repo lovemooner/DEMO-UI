@@ -45,7 +45,8 @@ public class MainController {
             @RequestParam(value = "start", required = false) Integer start,
             @RequestParam(value = "limit", required = false) Integer limit
     ) {
-        LOG.info("start:",start);
+
+        LOG.info("start:{},project:{}",start,project);
         start = start == null ? START : start;
         limit = limit == null ? LIMIT : limit;
         List<PBC> pbcs= reportService.getPBC(workspace,project,errorfile,start, limit);
